@@ -4,14 +4,10 @@ use Phalcon\Mvc\Model;
 
 class Users extends Model
 {
-//    public $id;
-//    public $login;
-//    public $name;
-//    public $email;
-//    $public $password;
-//    $public $status;
-//    public function initialize()
-//    {
-//        $this->setSource('user');
-//    }
+
+    public function initialize()
+    {
+        $this->setSource('users');
+        $this->hasMany('user_id', 'Users', 'user_id');
+    }
 }

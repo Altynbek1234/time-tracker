@@ -11,7 +11,7 @@ return new \Phalcon\Config([
         'host'        => 'localhost',
         'username'    => 'user',
         'password'    => '12345678',
-        'dbname'      => 'test',
+        'dbname'      => 'model_test',
         'charset'     => 'utf8',
     ],
     'application' => [

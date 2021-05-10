@@ -6,7 +6,8 @@ class Time extends Model
 {
     public function initialize()
     {
-        $this->setSource('time');
+
+        $this->hasMany('user_id', 'Users', 'user_id');
     }
 
 }
