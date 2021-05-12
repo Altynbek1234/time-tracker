@@ -21,20 +21,20 @@ class IndexController extends ControllerBase
 
 //            ->addJs('js/bootstrap.min.js');
 
-//        $users = Users::find();
-//        foreach ($users as $user) {
+//        $user = Users::find();
+//        foreach ($user as $user) {
 //            print_die($user->email);
 //
 //        }
-//        print_die($users);
+//        print_die($user);
 
-//        $this->view->setVar('all', $users);
+//        $this->view->setVar('all', $user);
 
-//        print_die($users->toArray());
+//        print_die($user->toArray());
 //          $times = Time::find();
 //          print_die($times->toArray());
     }
 
-//        $this->view->setVar('all', $users);
+//        $this->view->setVar('all', $user);
 }
 
