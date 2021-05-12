@@ -37,6 +37,39 @@
 //     }
 // });
 //console.log("Main.js");
+
+// $('#timerbutton').on('click',function (event){
+//    // console.log('test');
+//     event.preventDefault();
+//     let state = $(this).val();
+//     // console.log(state);
+//     if(state == "start"){
+//         $(this).prop('value', 'stop');
+//     }else{
+//         $(this).prop('value', 'start');
+//     }
+//     $.ajax({
+//         type: "POST",
+//         url: "test",
+//         dataType: 'json',
+//         data: {"state": state },         // данные, которые отправляем на сервер
+//         success: function(data) {
+//             console.log(data);
+//             var test = JSON.parse(data);
+//             // console.log(test);
+//
+//             $("#timertable").empty();
+//             //$("#timertable").append("<tr><td><input id=\"timerbutton\"  class=\"mk\" type=\"button\" name=\"timerbutton\" value="+state+" /></td></tr>");
+//             console.log(data);
+//
+//             // $('#start-test').attr('data-id', test);
+//         }
+//     });
+//     // .fail(function(data) {
+//     //    console.log(data)
+//     // });
+// });
+
 $('#timerbutton').on('click',function (event){
     event.preventDefault();
     let state = $(this).val();
@@ -45,30 +78,22 @@ $('#timerbutton').on('click',function (event){
     }else{
         $(this).prop('value', 'start');
     }
-
     $.ajax({
+
         type: "POST",
-        url: "test",
+        url: "tracker/test",
         dataType: 'json',
         data: {
             "state": state
         },         // данные, которые отправляем на сервер
-
         success: function(data) {
-             // var test = JSON.parse(data);
-             // console.log(test);
             $("#timertable").empty();
-            //$("#timertable").append("<tr><td><input id=\"timerbutton\"  class=\"mk\" type=\"button\" name=\"timerbutton\" value="+state+" /></td></tr>");
             console.log(data);
             $.each(data, function( index, value ) {
                 console.log( "started time" + ": " + value['started_time'] );
                 console.log( "stopped time" + ": " + value['stopped_time'] );
                 $("#timertable").append("<tr><td>"+value['started_time']+" <> </td><td>"+value['stopped_time'] +"</td></tr>");
             });
-           // $('#start-test').attr('data-id', test);
         }
     });
-        // .fail(function(data) {
-        //    console.log(data)
-        // });
 });

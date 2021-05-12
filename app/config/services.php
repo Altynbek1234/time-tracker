@@ -2,12 +2,15 @@
 
 use Phalcon\Mvc\Router;
 use Phalcon\Mvc\View;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Direct as Flash;
+use Time\Auth\Auth;
+
 
 /**
  * Shared configuration service
@@ -101,6 +104,15 @@ $di->set('flash', function () {
         'warning' => 'alert alert-warning'
     ]);
 });
+/**
+* Dispatcher use a default namespace
+*/
+
+$di->set('dispatcher', function () {
+    $dispatcher = new Dispatcher();
+    $dispatcher->setDefaultNamespace('Time\Controllers');
+    return $dispatcher;
+});
 
 /**
  * Start the session the first time some component request the session service
@@ -110,6 +122,12 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+/**
+ * Custom authentication component
+ */
+$di->set('auth', function () {
+    return new Auth();
 });
 
 

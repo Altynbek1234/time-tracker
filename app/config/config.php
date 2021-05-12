@@ -1,8 +1,4 @@
 <?php
-/*
- * Modified: prepend directory path of current file, because of this file own different ENV under between Apache and command line.
- * NOTE: please remove this comment.
- */
 
 
 return new \Phalcon\Config([
@@ -11,13 +7,14 @@ return new \Phalcon\Config([
         'host'        => 'localhost',
         'username'    => 'user',
         'password'    => '12345678',
-        'dbname'      => 'model_test',
+        'dbname'      => 'test',
         'charset'     => 'utf8',
     ],
     'application' => [
         'appDir'         => APP_PATH . '/',
         'controllersDir' => APP_PATH . '/controllers/',
         'modelsDir'      => APP_PATH . '/models/',
+        'formsDir'       => APP_PATH . '/forms/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'viewsDir'       => APP_PATH . '/views/',
         'pluginsDir'     => APP_PATH . '/plugins/',
