@@ -25,6 +25,7 @@ class TrackerController extends ControllerBase
     public function testAction()
     {
 
+
         $user_id = '';
         if ($this->session->has('id')) {
             // Получение значения
@@ -34,6 +35,8 @@ class TrackerController extends ControllerBase
 //        print_die($id);
 //        $this->assets->addJs('js/main.js');
 //        $userTest = 1;
+        $userTest = 1;
+
         $state = "";
 //        $time = Time::find();
 //        print_die($time->toArray());
@@ -100,6 +103,7 @@ class TrackerController extends ControllerBase
     {
 //        $this->assets
 //            ->addJs('js/main.js');
+
 //        $time = Time::query()
 //        ->where('user_id = :id:')
 //        ->bind(['id' => $id])
@@ -127,6 +131,10 @@ class TrackerController extends ControllerBase
 //        $stop = $last->stopped_time;
 //        $result = (strtotime($start) - strtotime($stop) ) / 60;
 //        print_die($result);
+        $time = Time::find();
+//        $time->toArray();
+        print_die($time->toArray());
+
 //        $this->view->setVars(
 //            [
 //                'times' => $time
@@ -139,6 +147,7 @@ class TrackerController extends ControllerBase
 
     public function staffAction()
     {
+
 
         $time = Time::find();
         $last = $time->getLast();
@@ -194,13 +203,63 @@ class TrackerController extends ControllerBase
 //
 //            }
 //        }
+        $time = new Time();
+        if (isset($_POST['start'])) {
+            $date = new DateTime('now', new DateTimeZone('Asia/Bishkek'));
+            $start_time = $date->format('H:i:s');
+//            print_die($start_time);
+
+            $time->started_time = $start_time;
+
+            if ($time->save() === false) {
+                $messages = $time->getMessages();
+
+                foreach ($messages as $message) {
+                    echo $message, "\n";
+                }
+
+            } else {
+//                $this->response->redirect('');
+                print_die(132);
+
+            }
+        } elseif (isset($_POST['stop'])) {
+            $date = new DateTime('now', new DateTimeZone('Asia/Bishkek'));
+            $stop_time = $date->format('H:i:s');
+//            print_die($stop_time);
+//            $test = intval($this->request->getPost("test"));
+//            $test = 46;
+//            $time = Time::findFirst("id = $test");
+//            print_die($time->toArray());
+            $time->stop_time = $stop_time;
+//            $time->stopped_time = $stop_time;
+            $time->save();
+            if ($time->save() === false) {
+                echo "didnt wrote \n";
+                $messages = $time->getMessages();
+
+                foreach ($messages as $message) {
+                    echo $message, "\n";
+                }
+
+
+            } else {
+
+                return $this->response->redirect($this->request->getHTTPReferer());
+
+            }
+        }
+
 //        $this->assets
 //            ->addJs('js/main.js');
 
 
 //        print_die($name);
+
 //        $robotsParts = $time->getUsers();
 //        print_die($robotsParts);
+
+
     }
 
 

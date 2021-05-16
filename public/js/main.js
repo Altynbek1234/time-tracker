@@ -78,6 +78,7 @@ $('#timerbutton').on('click',function (event){
     }else{
         $(this).prop('value', 'start');
     }
+    console.log(state)
     $.ajax({
 
         type: "POST",
@@ -87,6 +88,10 @@ $('#timerbutton').on('click',function (event){
             "state": state
         },         // данные, которые отправляем на сервер
         success: function(data) {
+
+            // var test = JSON.parse(data);
+            // console.log(test);
+
             $("#timertable").empty();
             console.log(data);
             $.each(data, function( index, value ) {
@@ -94,6 +99,15 @@ $('#timerbutton').on('click',function (event){
                 console.log( "stopped time" + ": " + value['stopped_time'] );
                 $("#timertable").append("<tr><td>"+value['started_time']+" <> </td><td>"+value['stopped_time'] +"</td></tr>");
             });
+
         }
     });
+
+            // $('#start-test').attr('data-id', test);
+
+
+    // .fail(function(data) {
+    //    console.log(data)
+    // });
+
 });

@@ -7,7 +7,11 @@ class Time extends Model
     public function initialize()
     {
         $this->setSource('tracker');
+
         $this->belongsTo("user_id", 'Users', "id");
+
+        $this->hasMany("id", 'Users', "user_id");
+
 
 
     }
