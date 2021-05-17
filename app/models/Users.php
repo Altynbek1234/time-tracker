@@ -80,6 +80,7 @@ class Users extends Model
         $this->banned = 'N';
     }
 
+
     /**
      * Send a confirmation e-mail to the user if the account is not active
      */

@@ -2,6 +2,7 @@
 namespace Time\Controllers;
 
 //use Phalcon\Mvc\Controller;
+use http\Client\Curl\User;
 use Time\Models\Time;
 use Time\Models\Users;
 use DateTime;
@@ -14,17 +15,18 @@ class TrackerController extends ControllerBase
 {
 
 
-    public function indexAction()
+    public function indexAction(    )
     {
 //        $this->assets
 //            ->addJs('js/main.js');
 
         $this->assets->addJs('js/main.js');
+
+
     }
 
     public function testAction()
     {
-
 
         $user_id = '';
         if ($this->session->has('id')) {
@@ -32,14 +34,9 @@ class TrackerController extends ControllerBase
             $user_id = $this->session->get('id');
 
         }
-//        print_die($id);
-//        $this->assets->addJs('js/main.js');
-//        $userTest = 1;
-        $userTest = 1;
 
         $state = "";
-//        $time = Time::find();
-//        print_die($time->toArray());
+
         if(isset($_POST['state'])){
             $state = $_POST['state'];
         }
@@ -47,18 +44,12 @@ class TrackerController extends ControllerBase
         $date = new DateTime('now', new DateTimeZone('Asia/Bishkek'));
         $time_now = $date->format('H:i');
         if($state == "start"){
-//            $seesionUserId = $this->session->get('user',[
-//                    'id' => $user->id
-//            ]);
 
             $time = new Time();
             $time->started_time = $time_now;
             $time->state = $state;
             $time->user_id = $user_id;
-//            $time->stopped_time = $stop_time;
             $time->save();
-
-
             $this->session->set('last_time_id', $time->id);
         }else if($state == "stop"){
 
@@ -72,14 +63,22 @@ class TrackerController extends ControllerBase
 
             $time->stopped_time = $time_now;
             $time->state = 'stop';
+
             $time->update();
-//            return json_encode($time);
             $time = Time::find();
-//            $last = $time->getLast();
-//            return json_encode($time->stopped_time);
+
 
         }
 
+
+        $time = Time::find();
+
+        $last = $time->getLast();
+//        print_die($last->toArray());
+        $start = $last->started_time;
+        $stop = $last->stopped_time;
+
+        $work_time = (strtotime($start) - strtotime($stop) ) / 60;
 
         $time = Time::find([
             'conditions' => 'user_id = :id:',
@@ -87,17 +86,26 @@ class TrackerController extends ControllerBase
                 'id' => $user_id
             ]
         ]);
-//        $last = $time->getLast();
-//        $start = $last->started_time;
-//        $stop = $last->stopped_time;
-//        $result = (strtotime($start) - strtotime($stop) ) / 60;
-//        $x = 45;
+
+        $sum = 0;
+        foreach ($time as $i){
+            $sum = $sum + intval($i->work_time);
+        }
+
+        $total_time = $last->total_time;
+
+        function hour_min($minutes){// Total
+            if($minutes <= 0) return '00 Hours 00 Minutes';
+            else
+                return sprintf("%02d",floor($minutes / 60)).':'.sprintf("%02d",str_pad(($minutes % 60), 2, "0", STR_PAD_LEFT)). "";
+        }
+//        print_die(hour_min($total_time));
+
+        $last->work_time = abs($work_time);
+        $last->total_time = hour_min($sum);
+        $last->update();
         return json_encode($time);
 
-//
-
-
-//        print_die($last);
     }
     public function timesAction()
     {
@@ -131,9 +139,9 @@ class TrackerController extends ControllerBase
 //        $stop = $last->stopped_time;
 //        $result = (strtotime($start) - strtotime($stop) ) / 60;
 //        print_die($result);
-        $time = Time::find();
+//        $time = Time::find();
 //        $time->toArray();
-        print_die($time->toArray());
+//        print_die($time->toArray());
 
 //        $this->view->setVars(
 //            [

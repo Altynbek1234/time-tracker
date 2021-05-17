@@ -89,25 +89,21 @@ $('#timerbutton').on('click',function (event){
         },         // данные, которые отправляем на сервер
         success: function(data) {
 
-            // var test = JSON.parse(data);
-            // console.log(test);
-
             $("#timertable").empty();
-            console.log(data);
+            // console.log(data);
             $.each(data, function( index, value ) {
                 console.log( "started time" + ": " + value['started_time'] );
                 console.log( "stopped time" + ": " + value['stopped_time'] );
-                $("#timertable").append("<tr><td>"+value['started_time']+" <> </td><td>"+value['stopped_time'] +"</td></tr>");
+                $("#timertable").empty();
+                $("#timertable").append("<tr>" +
+                        "<td>"+value['started_time']+" :: </td>" +
+                        "<td>"+value['stopped_time'] +"</td>" +
+                        "<td>"+"  work time  " + value['total_time'] +"</td>" +
+                    "</tr>");
             });
 
         }
     });
 
-            // $('#start-test').attr('data-id', test);
-
-
-    // .fail(function(data) {
-    //    console.log(data)
-    // });
 
 });

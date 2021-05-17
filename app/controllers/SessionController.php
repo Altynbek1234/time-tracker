@@ -84,11 +84,7 @@ class SessionController extends ControllerBase
             ]);
             $id = $user->id;
             $this->session->set('id', $id);
-//            if ($this->session->has('id')) {
-//                // Получение значения
-//                $name = $this->session->get('id');
-//                print_die($id);
-//            }
+
             if($user !== false){
                 if($user->password === sha1($password)){
                     if($user->active == "N"){
