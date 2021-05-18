@@ -78,7 +78,7 @@ $('#timerbutton').on('click',function (event){
     }else{
         $(this).prop('value', 'start');
     }
-    console.log(state)
+
     $.ajax({
 
         type: "POST",
@@ -89,19 +89,23 @@ $('#timerbutton').on('click',function (event){
         },         // данные, которые отправляем на сервер
         success: function(data) {
 
-            $("#timertable").empty();
+            // $("#timertable").empty();
+            // $("#timertable").remove();
             // console.log(data);
             $.each(data, function( index, value ) {
+                $("#timertable").empty();
                 console.log( "started time" + ": " + value['started_time'] );
                 console.log( "stopped time" + ": " + value['stopped_time'] );
-                $("#timertable").empty();
+                var start = value['started_time'];
+                var stop = value['stopped_time'] == null ? '' : value['stopped_time'];
+                var total = value['total_time'] == null ? '' : value['total_time'];
+                // $("#timertable").empty();
                 $("#timertable").append("<tr>" +
-                        "<td>"+value['started_time']+" :: </td>" +
-                        "<td>"+value['stopped_time'] +"</td>" +
-                        "<td>"+"  work time  " + value['total_time'] +"</td>" +
+                        "<td>"+ start +" :: </td>" +
+                        "<td>"+ stop +"</td>" +
+                        "<td>"+" " + total + "</td>" +
                     "</tr>");
             });
-
         }
     });
 

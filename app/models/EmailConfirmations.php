@@ -57,16 +57,16 @@ class EmailConfirmations extends Model
     /**
      * Send a confirmation e-mail to the user after create the account
      */
-    public function afterCreate()
-    {
-        $this->getDI()
-            ->getMail()
-            ->send([
-                $this->user->email => $this->user->name
-            ], "Please confirm your email", 'confirmation', [
-                'confirmUrl' => '/confirm/' . $this->code . '/' . $this->user->email
-            ]);
-    }
+//    public function afterCreate()
+//    {
+//        $this->getDI()
+//            ->getMail()
+//            ->send([
+//                $this->user->email => $this->user->name
+//            ], "Please confirm your email", 'confirmation', [
+//                'confirmUrl' => '/confirm/' . $this->code . '/' . $this->user->email
+//            ]);
+//    }
 
     public function initialize()
     {

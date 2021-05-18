@@ -8,6 +8,7 @@ use Time\Forms\LoginForm;
 use Time\Forms\SignUpForm;
 use Time\Exception\Exception;
 use Time\Models\ResetPasswords;
+
 /**
  * Controller used handle non-authenticated session actions like login/logout, users signup, and forgotten passwords
  * Timetracker\Controllers\SessionController
@@ -22,9 +23,11 @@ class SessionController extends ControllerBase
     {
         $this->view->setTemplateBefore('public');
     }
+
     public function indexAction()
     {
     }
+
     /**
      * Allow a users to signup to the system
      */
@@ -67,12 +70,12 @@ class SessionController extends ControllerBase
     }
 
 
-
     public function authAction()
     {
 
         $form = new LoginForm();
-        if($this->request->isPost()){
+
+        if ($this->request->isPost()) {
 
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
@@ -82,18 +85,23 @@ class SessionController extends ControllerBase
                     $email,
                 ]
             ]);
-            $id = $user->id;
-            $this->session->set('id', $id);
+//            $id = $user->id;
+//            $this->session->set('id', $id);
 
-            if($user !== false){
-                if($user->password === sha1($password)){
-                    if($user->active == "N"){
+            if ($user !== false) {
+                if ($this->auth->check(
+
+                    [   'email' => $this->request->getPost('email'),
+                        'password' => $this->request->getPost('password')
+                    ]
+                )) {
+                    if ($user->active == "N") {
                         $this->flash->error("User Deactivated");
                         return $this->response->redirect('tracker');
                     }
 
                     $this->registerSession($user);
-                    if ($user->role == 'admin'){
+                    if ($user->role == 'admin') {
                         return $this->dispatcher->forward([
                             'controller' => 'admin',
                             'action' => 'index'
@@ -143,6 +151,7 @@ class SessionController extends ControllerBase
         }
         $this->view->form = $form;
     }
+
     /**
      * Closes the session
      */
@@ -151,6 +160,8 @@ class SessionController extends ControllerBase
         $this->auth->remove();
         return $this->response->redirect('index');
     }
-    public function homeAction(){
+
+    public function homeAction()
+    {
     }
 }
