@@ -1,4 +1,5 @@
 <?php
+
 namespace Time\Controllers;
 
 use Phalcon\Mvc\Model\Criteria;
@@ -8,241 +9,241 @@ use Time\Models\Holidays;
 
 class HolidaysController extends ControllerBase
 {
-/**
-* Index action
-*/
-public function indexAction()
-{
+    /**
+     * Index action
+     */
+    public function indexAction()
+    {
 
-$this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
-$this->view->setTemplateBefore('public');
-$this->view->holidays = Holidays::find();
+        $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
+        $this->view->setTemplateBefore('public');
+        $this->view->holidays = Holidays::find();
 
-}
+    }
 
-/**
-* Searches for holidays
-*/
-public function searchAction()
-{
+    /**
+     * Searches for holidays
+     */
+    public function searchAction()
+    {
 
-$numberPage = 1;
-if ($this->request->isPost()) {
-$query = Criteria::fromInput($this->di, 'Holiday', $_POST);
-$this->persistent->parameters = $query->getParams();
-} else {
-$numberPage = $this->request->getQuery("page", "int");
-}
+        $numberPage = 1;
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, 'Holiday', $_POST);
+            $this->persistent->parameters = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery("page", "int");
+        }
 
-$parameters = $this->persistent->parameters;
-if (!is_array($parameters)) {
-$parameters = [];
-}
-$parameters["order"] = "id";
+        $parameters = $this->persistent->parameters;
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
+        $parameters["order"] = "id";
 
-$holiday = Holiday::find($parameters);
-if (count($holiday) == 0) {
-$this->flash->notice("The search did not find any holidays");
+        $holiday = Holiday::find($parameters);
+        if (count($holiday) == 0) {
+            $this->flash->notice("The search did not find any holidays");
 
-$this->dispatcher->forward([
-"controller" => "holidays",
-"action" => "index"
-]);
+            $this->dispatcher->forward([
+                "controller" => "holidays",
+                "action" => "index"
+            ]);
 
-return;
-}
+            return;
+        }
 
-$paginator = new Paginator([
-'data' => $holiday,
-'limit'=> 10,
-'page' => $numberPage
-]);
+        $paginator = new Paginator([
+            'data' => $holiday,
+            'limit' => 10,
+            'page' => $numberPage
+        ]);
 
-$this->view->page = $paginator->getPaginate();
-}
+        $this->view->page = $paginator->getPaginate();
+    }
 
-/**
-* Displays the creation form
-*/
-public function newAction()
-{
-$this->view->setTemplateBefore('public');
-}
+    /**
+     * Displays the creation form
+     */
+    public function newAction()
+    {
+        $this->view->setTemplateBefore('public');
+    }
 
-/**
-* Edits a holidays
-*
-* @param string $id
-*/
-public function editAction($id)
-{
-$this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
-$this->view->setTemplateBefore('public');
-if (!$this->request->isPost()) {
+    /**
+     * Edits a holidays
+     *
+     * @param string $id
+     */
+    public function editAction($id)
+    {
+        $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
+        $this->view->setTemplateBefore('public');
+        if (!$this->request->isPost()) {
 
-$holiday = Holidays::findFirstByid($id);
-if (!$holiday) {
-$this->flash->error("holidays was not found");
+            $holiday = Holidays::findFirstByid($id);
+            if (!$holiday) {
+                $this->flash->error("holidays was not found");
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
+                $this->dispatcher->forward([
+                    'controller' => "holidays",
+                    'action' => 'index'
+                ]);
 
-return;
-}
+                return;
+            }
 
-$this->view->id = $holiday->id;
+            $this->view->id = $holiday->id;
 
-$this->tag->setDefault("id", $holiday->id);
-$this->tag->setDefault("name", $holiday->name);
-$this->tag->setDefault("day", $holiday->day);
-$this->tag->setDefault("month", $holiday->month);
-$this->tag->setDefault("active", $holiday->active);
+            $this->tag->setDefault("id", $holiday->id);
+            $this->tag->setDefault("name", $holiday->name);
+            $this->tag->setDefault("day", $holiday->day);
+            $this->tag->setDefault("month", $holiday->month);
+            $this->tag->setDefault("active", $holiday->active);
 
-}
-}
+        }
+    }
 
-/**
-* Creates a new holidays
-*/
-public function createAction()
-{
-if (!$this->request->isPost()) {
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
+    /**
+     * Creates a new holidays
+     */
+    public function createAction()
+    {
+        if (!$this->request->isPost()) {
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'index'
+            ]);
 
-return;
-}
+            return;
+        }
 
-$holiday = new Holidays();
-$holiday->name = $this->request->getPost("name");
-$holiday->day = $this->request->getPost("day");
-$holiday->month = $this->request->getPost("month");
-$holiday->active = $this->request->getPost("active");
-
-
-if (!$holiday->save()) {
-foreach ($holiday->getMessages() as $message) {
-$this->flash->error($message);
-}
-
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'new'
-]);
-
-return;
-}
-
-$this->flash->success("holidays was created successfully");
-
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
-}
-
-/**
-* Saves a holidays edited
-*
-*/
-public function saveAction()
-{
-
-if (!$this->request->isPost()) {
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
-
-return;
-}
-
-$id = $this->request->getPost("id");
-$holiday = Holidays::findFirstByid($id);
-
-if (!$holiday) {
-$this->flash->error("holidays does not exist " . $id);
-
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
-
-return;
-}
-
-$holiday->name = $this->request->getPost("name");
-$holiday->dateHoliday = $this->request->getPost("day");
-$holiday->dateHoliday = $this->request->getPost("month");
-$holiday->active = $this->request->getPost("active");
+        $holiday = new Holidays();
+        $holiday->name = $this->request->getPost("name");
+        $holiday->day = $this->request->getPost("day");
+        $holiday->month = $this->request->getPost("month");
+        $holiday->active = $this->request->getPost("active");
 
 
-if (!$holiday->save()) {
+        if (!$holiday->save()) {
+            foreach ($holiday->getMessages() as $message) {
+                $this->flash->error($message);
+            }
 
-foreach ($holiday->getMessages() as $message) {
-$this->flash->error($message);
-}
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'new'
+            ]);
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'edit',
-'params' => [$holiday->id]
-]);
+            return;
+        }
 
-return;
-}
+        $this->flash->success("holidays was created successfully");
 
-$this->flash->success("holidays was updated successfully");
+        $this->dispatcher->forward([
+            'controller' => "holidays",
+            'action' => 'index'
+        ]);
+    }
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
-}
+    /**
+     * Saves a holidays edited
+     *
+     */
+    public function saveAction()
+    {
 
-/**
-* Deletes a holidays
-*
-* @param string $id
-*/
-public function deleteAction($id)
-{
-$holiday = Holidays::findFirstByid($id);
-if (!$holiday) {
-$this->flash->error("holidays was not found");
+        if (!$this->request->isPost()) {
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'index'
+            ]);
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'index'
-]);
+            return;
+        }
 
-return;
-}
+        $id = $this->request->getPost("id");
+        $holiday = Holidays::findFirstByid($id);
 
-if (!$holiday->delete()) {
+        if (!$holiday) {
+            $this->flash->error("holidays does not exist " . $id);
 
-foreach ($holiday->getMessages() as $message) {
-$this->flash->error($message);
-}
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'index'
+            ]);
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => 'search'
-]);
+            return;
+        }
 
-return;
-}
+        $holiday->name = $this->request->getPost("name");
+        $holiday->dateHoliday = $this->request->getPost("day");
+        $holiday->dateHoliday = $this->request->getPost("month");
+        $holiday->active = $this->request->getPost("active");
 
-$this->flash->success("holidays was deleted successfully");
 
-$this->dispatcher->forward([
-'controller' => "holidays",
-'action' => "index"
-]);
-}
+        if (!$holiday->save()) {
+
+            foreach ($holiday->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'edit',
+                'params' => [$holiday->id]
+            ]);
+
+            return;
+        }
+
+        $this->flash->success("holidays was updated successfully");
+
+        $this->dispatcher->forward([
+            'controller' => "holidays",
+            'action' => 'index'
+        ]);
+    }
+
+    /**
+     * Deletes a holidays
+     *
+     * @param string $id
+     */
+    public function deleteAction($id)
+    {
+        $holiday = Holidays::findFirstByid($id);
+        if (!$holiday) {
+            $this->flash->error("holidays was not found");
+
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'index'
+            ]);
+
+            return;
+        }
+
+        if (!$holiday->delete()) {
+
+            foreach ($holiday->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            $this->dispatcher->forward([
+                'controller' => "holidays",
+                'action' => 'search'
+            ]);
+
+            return;
+        }
+
+        $this->flash->success("holidays was deleted successfully");
+
+        $this->dispatcher->forward([
+            'controller' => "holidays",
+            'action' => "index"
+        ]);
+    }
 
 }

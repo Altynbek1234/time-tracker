@@ -94,9 +94,12 @@ $('#timerbutton').on('click',function (event){
             $.each(data, function( index, value ) {
                 console.log( "started time" + ": " + value['started_time'] );
                 console.log( "stopped time" + ": " + value['stopped_time'] );
-                // if(value['started_time'] == "10:58"){
-                //     console.log(7878)
-                // }
+                if(value['started_time'] < "11:05:00"){
+                    console.log('ok')
+                }
+                else{
+                    console.log("late")
+                }
 
                 var start = value['started_time'];
                 var stop = value['stopped_time'] == null ? '' : value['stopped_time'];
