@@ -1,7 +1,4 @@
 <?php
-
-
-
 namespace Time\Controllers;
 
 use Phalcon\Tag;
@@ -14,7 +11,7 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 class ProfilesController extends ControllerBase
 {
     /**
-     * Default action. Set the private (authenticated) layout (layouts/private.volt)
+     * Default action. Set the private (authenticated) layout (layouts/private.phtml)
      */
     public function initialize()
     {
@@ -35,6 +32,7 @@ class ProfilesController extends ControllerBase
      */
     public function searchAction()
     {
+        $userId = $this->session->get('id');
         $numberPage = 1;
         if ($this->request->isPost()) {
             $query = Criteria::fromInput($this->di, 'Time\Models\Profiles', $this->request->getPost());

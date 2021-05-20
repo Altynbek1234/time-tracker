@@ -1,0 +1,48 @@
+
+<?= $this->getContent() ?>
+
+<?= $this->tag->form(['role' => 'form']) ?>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-8  mb-4 mt-4">
+        <h2 class="mb-sm-6 pb-sm-2">Manage permissions</h2>
+
+                   <div class="row mt-4 form-group justify-content-center">
+                        <label class="mr-4 col-form-label text-center" for="profileId">Profile</label>
+                        <div class="mr-4">
+			    <?= $this->tag->select(['profileId', $profiles, 'using' => ['id', 'name'], 'useEmpty' => true, 'emptyText' => '...', 'emptyValue' => '', 'class' => 'form-control mb-2 mb-sm-0']) ?>
+                        </div>
+                        <div class="">
+		            <?= $this->tag->submitButton(['Search', 'class' => 'btn btn-primary', 'name' => 'search']) ?>
+                        </div>
+                    </div>
+
+<?php if ($this->request->isPost() && $profile) { ?>
+
+<?php foreach ($this->acl->getResources() as $resource => $actions) { ?>
+
+	<h3><?= $resource ?></h3>
+
+	<table class="table table-bordered table-striped" align="center">
+		<thead>
+			<tr>
+				<th width="5%"></th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($actions as $action) { ?>
+			<tr>
+				<td align="center"><input type="checkbox" name="permissions[]" value="<?= $resource . '.' . $action ?>"  <?php if (isset($permissions[$resource . '.' . $action])) { ?> checked="checked" <?php } ?>></td>
+				<td><?= $this->acl->getActionDescription($action) . ' ' . $resource ?></td>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+
+<?php } ?>
+
+<?= $this->tag->submitButton(['Submit', 'class' => 'btn btn-primary', 'name' => 'submit']) ?>
+
+<?php } ?>
+
+</div>

@@ -84,23 +84,23 @@ class Users extends Model
     /**
      * Send a confirmation e-mail to the user if the account is not active
      */
-    public function afterSave()
-    {
-        // Only send the confirmation email if emails are turned on in the config
-        if ($this->getDI()->get('config')->useMail) {
-            if ($this->active == 'N') {
-                $emailConfirmation = new EmailConfirmations();
-
-                $emailConfirmation->usersId = $this->id;
-
-                if ($emailConfirmation->save()) {
-                    $this->getDI()
-                        ->getFlash()
-                        ->notice('A confirmation mail has been sent to ' . $this->email);
-                }
-            }
-        }
-    }
+//    public function afterSave()
+//    {
+//        // Only send the confirmation email if emails are turned on in the config
+//        if ($this->getDI()->get('config')->useMail) {
+//            if ($this->active == 'N') {
+//                $emailConfirmation = new EmailConfirmations();
+//
+//                $emailConfirmation->usersId = $this->id;
+//
+//                if ($emailConfirmation->save()) {
+//                    $this->getDI()
+//                        ->getFlash()
+//                        ->notice('A confirmation mail has been sent to ' . $this->email);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Validate that emails are unique across users

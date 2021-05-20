@@ -1,5 +1,6 @@
 <?= $this->getContent() ?>
 
+
 <div class="row justify-content-end mb-4">
     <div class="col-6 text-right">
     <?= $this->tag->linkTo(['users/create', '<span class="oi oi-plus" title="plus" aria-hidden="true"></span> Create User', 'class' => 'btn btn-primary']) ?>

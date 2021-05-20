@@ -17,7 +17,7 @@ use Time\Models\ResetPasswords;
 class SessionController extends ControllerBase
 {
     /**
-     * Default action. Set the public layout (layouts/public.volt)
+     * Default action. Set the public layout (layouts/public.phtml)
      */
     public function initialize()
     {
@@ -73,6 +73,8 @@ class SessionController extends ControllerBase
     public function authAction()
     {
 
+        //print_die(45454545);
+
         $form = new LoginForm();
 
         if ($this->request->isPost()) {
@@ -90,7 +92,6 @@ class SessionController extends ControllerBase
 
             if ($user !== false) {
                 if ($this->auth->check(
-
                     [   'email' => $this->request->getPost('email'),
                         'password' => $this->request->getPost('password')
                     ]
@@ -99,7 +100,6 @@ class SessionController extends ControllerBase
                         $this->flash->error("User Deactivated");
                         return $this->response->redirect('tracker');
                     }
-
                     $this->registerSession($user);
                     if ($user->role == 'admin') {
                         return $this->dispatcher->forward([

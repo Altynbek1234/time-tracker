@@ -18,7 +18,7 @@ class Time extends Model
     {
         // Total
         if ($sum <= 0) {
-            return ' ';
+            return '00: 00';
         } else {
             return sprintf("%02d", floor($sum / 60)) . ':' . sprintf("%02d", str_pad(($sum % 60), 2, "0", STR_PAD_LEFT)) . "";
         }

@@ -2,23 +2,22 @@
 
 namespace Time\Controllers;
 
-//use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\Controller;
 use http\Client\Curl\User;
 use Time\Models\Time;
 use Time\Models\Users;
 use DateTime;
 use DateTimeZone;
 
-//use Time\Models\Time;
 
 
 class TrackerController extends ControllerBase
 {
     public function indexAction()
     {
-//        $dateTime = intval(date('m'));
-//        $dateYers = intval(date('Y'));
-//
+        $this->view->setTemplateBefore('public');
+        $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
+
         $userId = '';
         if ($this->session->has('id')) {
             // Получение значения
@@ -31,19 +30,8 @@ class TrackerController extends ControllerBase
             // add the date to the dates array
             $dates[] = date('Y') . "-" . date('m') . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
         }
-//
-//        if (isset($_POST['month'])) {
-//            $calendarDate = $_POST['month'];
-//            print_die($calendarDate);
-//        }
-
-
-//        $amount_day = cal_days_in_month(CAL_GREGORIAN, $dateTime, $dateYers);// 31
 
         $users = Users::find();
-//        foreach ($users[1]->getTimes() as $time){
-//
-//        }
 
         $this->view->setVars(
         [
@@ -60,11 +48,14 @@ class TrackerController extends ControllerBase
 
     public function testAction()
     {
+
+
         $user_id = '';
         if ($this->session->has('id')) {
             // Получение значения user id
             $user_id = $this->session->get('id');
         }
+
         $state = "";
         if (isset($_POST['state'])) {
             $state = $_POST['state'];

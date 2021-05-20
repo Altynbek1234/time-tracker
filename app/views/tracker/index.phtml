@@ -42,7 +42,7 @@
         <option value="2021" selected="selected">2021</option>
     </select>&nbsp;&nbsp;&nbsp;&nbsp;
 </form>
-<input id="id" type="hidden" name="id" value=""/>
+<!--<input id="id" type="hidden" name="id" value=""/>-->
 <!--<input id="timerbutton"  class="mk" type="button" name="timerbutton" value="start" />-->
 
 <!--<table id="timertable">-->
@@ -63,10 +63,12 @@
         <th id="end"></th>
     </tr>
 </table>
-<!--<div style="text-align:center" id="timertable">-->
+<div >
     <input id="id" class="btn btn-primary" type="hidden" name="id" value="">
     <input id="timerbutton" class="btn btn-primary"  type="button" name="timerbutton" value="start"/>
-<!--</div>-->
+
+
+</div>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -88,7 +90,7 @@
                 <?php echo intval(date('d', strtotime($dateTime))); ?>
                 <br>
             </td>
-            <td style="background-color:#00FF00">
+            <td style="background-color:#0000ff">
                 <?php echo date('l', strtotime($dateTime)); ?>
                 <br>
             </td>
@@ -102,7 +104,10 @@
                     <?php if ($dateTime == $workTime->date && $workTime->user_id == $userId) { ?>
 
 
-                        <div style="text-align:center" id="timertable">
+                        <div >
+                            <div id="timertable">
+
+                            </div>
 <!--                            --><?php //echo $workTime->started_time . " : " . $workTime->stopped_time. "<br/>".  $workTime->total_time ?>
 
                         </div>

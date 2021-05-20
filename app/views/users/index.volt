@@ -1,5 +1,6 @@
 {{ content() }}
 
+
 <div class="row justify-content-end mb-4">
     <div class="col-6 text-right">
     {{ link_to("users/create", '<span class="oi oi-plus" title="plus" aria-hidden="true"></span> Create User', "class": "btn btn-primary") }}

@@ -1,7 +1,4 @@
 <?php
-
-
-
 namespace Time\Models;
 
 use Phalcon\Mvc\Model;

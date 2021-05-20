@@ -1,6 +1,19 @@
 <?php
 
-
+/*
+  +------------------------------------------------------------------------+
+  | Vökuró                                                                 |
+  +------------------------------------------------------------------------+
+  | Copyright (c) 2016-present Phalcon Team (https://www.phalconphp.com)   |
+  +------------------------------------------------------------------------+
+  | This source file is subject to the New BSD License that is bundled     |
+  | with this package in the file LICENSE.txt.                             |
+  |                                                                        |
+  | If you did not receive a copy of the license and are unable to         |
+  | obtain it through the world-wide-web, please send an email             |
+  | to license@phalconphp.com so we can send you a copy immediately.       |
+  +------------------------------------------------------------------------+
+*/
 
 namespace Time\Auth;
 
@@ -11,14 +24,18 @@ use Time\Exception\Exception;
 use Time\Models\SuccessLogins;
 use Time\Models\RememberTokens;
 
-
+/**
+ * Manages Authentication/Identity Management in Time
+ * Time\Auth\Auth
+ * @package Time\Auth
+ */
 class Auth extends Component
 {
     /**
      * Checks the user credentials
      *
      * @param array $credentials
-     * @return boolean
+     * @return booleana
      * @throws Exception
      */
     public function check($credentials)
@@ -30,13 +47,11 @@ class Auth extends Component
             throw new Exception('Wrong email/password combination');
         }
 
-
         // Check the password
         if (!$this->security->checkHash($credentials['password'], $user->password)) {
             $this->registerUserThrottling($user->id);
             throw new Exception('Wrong email/password combination');
         }
-
 
         // Check if the user was flagged
         $this->checkUserFlags($user);
@@ -54,14 +69,12 @@ class Auth extends Component
             'name' => $user->name,
             'profile' => $user->profile->name
         ]);
-
-
     }
 
     /**
      * Creates the remember me environment settings the related cookies and generating tokens
      *
-     * @param \Vokuro\Models\Users $user
+     * @param \Time\Models\Users $user
      * @throws Exception
      */
     public function saveSuccessLogin($user)
@@ -118,7 +131,7 @@ class Auth extends Component
     /**
      * Creates the remember me environment settings the related cookies and generating tokens
      *
-     * @param \Vokuro\Models\Users $user
+     * @param \Time\Models\Users $user
      */
     public function createRememberEnvironment(Users $user)
     {
@@ -154,7 +167,6 @@ class Auth extends Component
      */
     public function loginWithRememberMe()
     {
-
         $userId = $this->cookies->get('RMU')->getValue();
         $cookieToken = $this->cookies->get('RMT')->getValue();
 
@@ -202,7 +214,7 @@ class Auth extends Component
     /**
      * Checks if the user is banned/inactive/suspended
      *
-     * @param \Vokuro\Models\Users $user
+     * @param \Time\Models\Users $user
      * @throws Exception
      */
     public function checkUserFlags(Users $user)
@@ -214,11 +226,10 @@ class Auth extends Component
         if ($user->banned != 'N') {
             throw new Exception('The user is banned');
         }
-//        print_die($user->toArray());
+
         if ($user->suspended != 'N') {
             throw new Exception('The user is suspended');
         }
-
     }
 
     /**
@@ -257,7 +268,7 @@ class Auth extends Component
             if ($userId) {
                 $this->deleteToken($userId);
             }
-            
+
             $this->cookies->get('RMT')->delete();
         }
 
@@ -289,7 +300,7 @@ class Auth extends Component
     /**
      * Get the entity related to user in the active identity
      *
-     * @return \Vokuro\Models\Users
+     * @return \Time\Models\Users
      * @throws Exception
      */
     public function getUser()
@@ -306,7 +317,7 @@ class Auth extends Component
 
         return false;
     }
-    
+
     /**
      * Returns the current token user
      *
@@ -321,15 +332,15 @@ class Auth extends Component
                 'token' => $token,
             ],
         ]);
-        
-        $user_id = ($userToken) ? $userToken->usersId : false; 
+
+        $user_id = ($userToken) ? $userToken->usersId : false;
         return $user_id;
     }
 
     /**
      * Delete the current user token in session
      */
-    public function deleteToken($userId) 
+    public function deleteToken($userId)
     {
         $user = RememberTokens::find([
             'conditions' => 'usersId = :userId:',

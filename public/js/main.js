@@ -88,14 +88,16 @@ $('#timerbutton').on('click',function (event){
             "state": state
         },         // данные, которые отправляем на сервер
         success: function(data) {
-
-            // $("#timertable").empty();
+            $("#timertable").empty();
             // $("#timertable").remove();
             // console.log(data);
             $.each(data, function( index, value ) {
-                $("#timertable").empty();
                 console.log( "started time" + ": " + value['started_time'] );
                 console.log( "stopped time" + ": " + value['stopped_time'] );
+                // if(value['started_time'] == "10:58"){
+                //     console.log(7878)
+                // }
+
                 var start = value['started_time'];
                 var stop = value['stopped_time'] == null ? '' : value['stopped_time'];
                 var total = value['total_time'] == null ? '' : value['total_time'];
@@ -103,7 +105,7 @@ $('#timerbutton').on('click',function (event){
                 $("#timertable").append("<tr>" +
                         "<td>"+ start +" :: </td>" +
                         "<td>"+ stop +"</td>" +
-                        "<td>"+" " + total + "</td>" +
+                        "<td>"+"" + total + "</td>" +
                     "</tr>");
             });
         }

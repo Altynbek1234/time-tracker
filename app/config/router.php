@@ -1,24 +1,24 @@
 <?php
 $router = $di->getRouter();
-$router->add(
-//    '/test',
-//    [
-//        'controller' => 'signup',
-//        'action'     => 'register',
-//    ],
-    '/user',
-    [
+$router->add('/user', [
         'controller' => 'user',
         'action'     => 'index',
     ]
-
-
 );
-$router->add(
-    '/userid/{id}',
-    [
-        'controller' => 'tracker',
-        'action'     => 'times',
+$router->add('/login', [
+        'controller' => 'session',
+        'action'     => 'login',
     ]
 );
+$router->add('/profiles', [
+        'controller' => 'profiles',
+        'action'     => 'index',
+    ]
+);
+
+$router->add('/holidays', [
+    'controller' => 'holidays',
+    'action' => 'index',
+]);
+
 $router->handle();
