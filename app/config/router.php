@@ -26,6 +26,19 @@ $router->add('/latecomers', [
     'action' => 'index',
 ]);
 
+$router->add('/tracker', [
+    'controller' => 'tracker',
+    'action' => 'index',
+]);
 
+$router->add('/update/{time_id}', [
+    'controller' => 'users',
+    'action' => 'update',
+]);
+
+$router->add('/time/{user_id}', [
+    'controller' => 'users',
+    'action' => 'time',
+]);
 
 $router->handle();

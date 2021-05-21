@@ -144,6 +144,13 @@ class Users extends Model
             'reusable' => true
         ]);
 
+        $this->hasMany('id', __NAMESPACE__ . '\Latecomers', 'usersId', [
+            'alias' => 'latecomers',
+            'foreignKey' => [
+                'message' => 'User cannot be deleted because he/she has activity in the system'
+            ]
+        ]);
+
 //        $this->hasMany('id', __NAMESPACE__ . '\ResetPasswords', 'usersId', [
 //            'alias' => 'resetPasswords',
 //            'foreignKey' => [

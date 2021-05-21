@@ -23,6 +23,7 @@
                         <th>Suspended?</th>
                         <th>Confirmed?</th>
                         <th colspan="2">Action</th>
+                        <th colspan="2">Work</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,8 @@
                     <td><?= ($user->active == 'Y' ? 'Yes' : 'No') ?></td>
                     <td width="12%"><?= $this->tag->linkTo(['users/edit/' . $user->id, '<span class="oi oi-pencil" title="pencil" aria-hidden="true"></span> Edit', 'class' => 'btn btn-light btn-sm']) ?></td>
                     <td width="12%"><?= $this->tag->linkTo(['users/delete/' . $user->id, '<span class="oi oi-x" title="X" aria-hidden="true"></span> Delete', 'class' => 'btn btn-light btn-sm']) ?></td>
+                     <td width="12%"><?= $this->tag->linkTo(['time/' . $user->id, '<span class="oi oi-clock" title="clock" aria-hidden="true"></span> Work hours', 'class' => 'btn btn-light btn-sm']) ?> </td>
+
                 </tr>
                 <?php if ($v108798762584193100731loop->last) { ?>
                 </tbody>

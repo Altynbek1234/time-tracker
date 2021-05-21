@@ -131,4 +131,74 @@ class TrackerController extends ControllerBase
         }
         return json_encode($time);
     }
+
+    public function timeAction($id)
+    {
+
+        $user = Users::findFirstById($id);
+
+        if (!$user) {
+            $this->flash->error("User was not found");
+            return $this->dispatcher->forward([
+                'action' => 'index'
+            ]);
+        }
+
+        if ($this->request->isPost()) {
+            $user->assign([
+                'name' => $this->request->getPost('name', 'striptags'),
+                'profilesId' => $this->request->getPost('profilesId', 'int'),
+                'email' => $this->request->getPost('email', 'email'),
+                'banned' => $this->request->getPost('banned'),
+                'suspended' => $this->request->getPost('suspended'),
+                'active' => $this->request->getPost('active'),
+                'password' => $this->security->hash($this->request->getPost('password'))
+            ]);
+            if ($user->save()) {
+                $this->flash->success("User was updated successfully");
+            }
+        }
+
+        $this->view->user = $user;
+
+        $this->view->form = new UsersForm($user, [
+            'edit' => true
+        ]);
+    }
+
+    /**
+     * Users must use this action to change its password
+     */
+    public function changePasswordAction()
+    {
+        $form = new ChangePasswordForm();
+
+        if ($this->request->isPost()) {
+            if (!$form->isValid($this->request->getPost())) {
+                foreach ($form->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $user = $this->auth->getUser();
+
+                $user->password = $this->security->hash($this->request->getPost('password'));
+                $user->mustChangePassword = 'N';
+
+                $passwordChange = new PasswordChanges();
+                $passwordChange->user = $user;
+                $passwordChange->ipAddress = $this->request->getClientAddress();
+                $passwordChange->userAgent = $this->request->getUserAgent();
+
+                if (!$passwordChange->save()) {
+                    $this->flash->error($passwordChange->getMessages());
+                } else {
+                    $this->flash->success('Your password was successfully changed');
+
+                    $form->clear();
+                }
+            }
+        }
+
+        $this->view->form = $form;
+    }
 }

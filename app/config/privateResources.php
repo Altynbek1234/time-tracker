@@ -8,7 +8,9 @@ return new Config([
         'users' => [
             'index',
             'search',
+            'update',
             'edit',
+            'time',
             'create',
             'delete',
             'changePassword'
@@ -23,9 +25,10 @@ return new Config([
         'permissions' => [
             'index'
         ],
-//        'tracker' => [
-//            'test'
-//        ],
+
+        'tracker' => [
+            'test'
+        ],
 
     ]
 ]);

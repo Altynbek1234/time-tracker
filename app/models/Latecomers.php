@@ -33,14 +33,15 @@ class Latecomers extends Model
     /**
      * Initialize method for model.
      */
+
     public function initialize()
     {
         $this->setSchema("test");
         $this->setSource("latecomers");
-        $this->belongsTo('user_id', __NAMESPACE__ . '\Users', 'id', [
-            'alias' => 'users',
-            'reusable' => true
-        ]);
+        $this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', [
+        'alias' => 'users',
+        'reusable' => true
+    ]);
     }
 
     /**

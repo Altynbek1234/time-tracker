@@ -1,11 +1,12 @@
 <?php
 
+
 namespace Time\Controllers;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Model\Criteria;
 use Time\Forms\LatecomersForm;
-use Time\Models\LateComers;
+use Time\Models\Latecomers;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use Time\Models\Users;
 
@@ -49,13 +50,9 @@ class LatecomersController extends ControllerBase
             $parameters = $this->persistent->searchParams;
         }
 
-        $latecomers = Latecomers::find($parameters)->toArray();
-        $latecomerIds = array_column($latecomers, 'user_id');
 
-        $users = Users::findFirst([
-            'conditions' => 'WHERE id IN', $latecomerIds
-        ]);
 
+        $latecomers = Latecomers::find($parameters);
         if (count($latecomers) == 0) {
             $this->flash->notice("The search did not find any latecomers");
 
@@ -63,12 +60,12 @@ class LatecomersController extends ControllerBase
                 "action" => "index"
             ]);
         }
-
         $paginator = new Paginator([
-            "data" => $users,
+            "data" => $latecomers,
             "limit" => 10,
             "page" => $numberPage
         ]);
+//        print_die($paginator);
 
         $this->view->page = $paginator->getPaginate();
     }
@@ -102,8 +99,10 @@ class LatecomersController extends ControllerBase
         ]);
         $this->view->form->clear();
 
+
         $this->view->latecomers = $latecomers;
     }
+
 
 
 }

@@ -24,19 +24,19 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-            <th>Date</th>
             <th>Name</th>
             <th>Start Time</th>
-            <th colspan="2">Action</th>
             </tr>
         </thead>
-        <tbody>
-        <?php foreach ($page->items as $users): ?>
-            <tr>
-                <td><?php echo $users->id ?></td>
-                <td><?php echo $users->name ?></td>
-            </tr>
-        <?php endforeach; ?>
+            <tbody>
+            <?php foreach ($page->items as $latecomers) { ?>
+                    <tr>
+                        <td><?= $latecomers->users->name ?></td>
+                         <td><?= $latecomers->time ?></td>
+                    </tr>
+            <?php } ?>
+        <tr>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -58,3 +58,6 @@
         </nav>
     </div>
 </div>
+
+
+
