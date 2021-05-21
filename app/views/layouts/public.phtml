@@ -5,7 +5,7 @@
 
 
     <div class="collapse navbar-collapse" id="nav-content">
-        <ul class="navbar-nav"><?php $menus = ['Home' => 'index','Edit_time' => 'late',   'Staff' => 'tracker']; ?><?php foreach ($menus as $key => $value) { ?>
+        <ul class="navbar-nav"><?php $menus = ['Home' => 'index','Edit_time' => 'late', 'Late users'=>  'latecomers',  'Staff' => 'tracker']; ?><?php foreach ($menus as $key => $value) { ?>
                 <?php if ($value == $this->dispatcher->getControllerName()) { ?>
                     <li class="active nav-item"><?= $this->tag->linkTo([$value, $key, 'class' => 'nav-link']) ?></li>
                 <?php } else { ?>

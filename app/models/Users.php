@@ -125,31 +125,31 @@ class Users extends Model
             'reusable' => true
         ]);
 
-        $this->hasMany('id', __NAMESPACE__ . '\SuccessLogins', 'usersId', [
-            'alias' => 'successLogins',
-            'foreignKey' => [
-                'message' => 'User cannot be deleted because he/she has activity in the system'
-            ]
-        ]);
-
-        $this->hasMany('id', __NAMESPACE__ . '\PasswordChanges', 'usersId', [
-            'alias' => 'passwordChanges',
-            'foreignKey' => [
-                'message' => 'User cannot be deleted because he/she has activity in the system'
-            ]
-        ]);
+//        $this->hasMany('id', __NAMESPACE__ . '\SuccessLogins', 'usersId', [
+//            'alias' => 'successLogins',
+//            'foreignKey' => [
+//                'message' => 'User cannot be deleted because he/she has activity in the system'
+//            ]
+//        ]);
+//
+//        $this->hasMany('id', __NAMESPACE__ . '\PasswordChanges', 'usersId', [
+//            'alias' => 'passwordChanges',
+//            'foreignKey' => [
+//                'message' => 'User cannot be deleted because he/she has activity in the system'
+//            ]
+//        ]);
 
         $this->hasMany('id', __NAMESPACE__ . '\Time', 'user_id', [
             'alias' => 'times',
             'reusable' => true
         ]);
 
-        $this->hasMany('id', __NAMESPACE__ . '\ResetPasswords', 'usersId', [
-            'alias' => 'resetPasswords',
-            'foreignKey' => [
-                'message' => 'User cannot be deleted because he/she has activity in the system'
-            ]
-        ]);
+//        $this->hasMany('id', __NAMESPACE__ . '\ResetPasswords', 'usersId', [
+//            'alias' => 'resetPasswords',
+//            'foreignKey' => [
+//                'message' => 'User cannot be deleted because he/she has activity in the system'
+//            ]
+//        ]);
     }
 
     public function getTimes($params = null)

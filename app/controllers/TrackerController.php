@@ -3,7 +3,7 @@
 namespace Time\Controllers;
 
 
-use Time\Models\LateComers;
+use Time\Models\Latecomers;
 use Time\Models\Late;
 use Time\Models\Time;
 use Time\Models\Users;
@@ -59,17 +59,21 @@ class TrackerController extends ControllerBase
 
             $time->started_time = $time_now;
             $late = Late::findFirst();
-            $isExist = LateComers::findFirst([
+
+            $isExist = Latecomers::findFirst([
                 'conditions' => 'usersId = :user_id: AND date = :today:',
                 'bind' => [
                     'user_id' => $user_id,
                     'today' => $today,
                 ]
             ]);
+
+
+
             if(!count($isExist->date)){
 
                 if(strtotime($time->started_time) > strtotime($late->late_time)) {
-                    $userLate = new LateComers();
+                    $userLate = new Latecomers();
                     $userLate->usersId = $user_id;
                     $userLate->time = $time_now;
                     $userLate->date = $today;
