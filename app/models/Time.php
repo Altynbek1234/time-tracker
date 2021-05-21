@@ -23,6 +23,13 @@ class Time extends Model
             return sprintf("%02d", floor($sum / 60)) . ':' . sprintf("%02d", str_pad(($sum % 60), 2, "0", STR_PAD_LEFT)) . "";
         }
     }
-
-
+    public static function allDayInMonth(){
+        $dates = [];
+        for($i = 1; $i <=  date('t'); $i++)
+        {
+            // add the date to the dates array
+            $dates[] = date('Y') . "-" . date('m') . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+        }
+        return $dates;
+    }
 }

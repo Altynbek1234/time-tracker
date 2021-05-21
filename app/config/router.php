@@ -21,4 +21,9 @@ $router->add('/holidays', [
     'action' => 'index',
 ]);
 
+$router->add('/latecomers', [
+    'controller' => 'latecomers',
+    'action' => 'index',
+]);
+
 $router->handle();
